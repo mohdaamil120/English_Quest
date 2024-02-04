@@ -34,7 +34,7 @@ userRouter.post("/register", async(req,res) => {
         }
     } 
     catch (err) {
-        res.status(401).send({"error":"something wrong in catch block for user",err})
+        res.status(401).send({"msg":"something wrong in catch block for user"})
     }
 })
 
@@ -48,7 +48,7 @@ userRouter.post("/login", async(req,res) => {
         else{
             const user = await UserModel.findOne({email})
             if(!user) {
-                return res.status(202).send("Please Register first")
+                return res.status(202).send({"msg":"Please Register first"})
             }
             else{
                 bcrypt.compare(password, user.password, (err,result) => {
@@ -56,13 +56,13 @@ userRouter.post("/login", async(req,res) => {
                         const token = jwt.sign({userID:user._id, name:user.name, role:user.role},process.env.secretKey,{expiresIn:"1d"})
                         res.status(200).send({"msg":"Login Successfull!", "token":token})
                     } else {
-                        res.status(200).send({"error":"Wrong Credentials"})
+                        res.status(200).send({"msg":"Wrong Credentials"})
                     }
                 })
             }
         }
     } catch (err) {
-        res.status(400).send({"error":"error in login catch", err} )
+        res.status(400).send({"msg":"error in login catch", err} )
     }
 })
 
