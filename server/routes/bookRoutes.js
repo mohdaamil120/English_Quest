@@ -8,7 +8,7 @@ const bootRouter = express.Router()
 
 
 // restricted routes
-
+// all roles can see
 bootRouter.get("/",auth,  async(req,res) => {
     try {
         const books = await BookModel.find()
@@ -18,7 +18,7 @@ bootRouter.get("/",auth,  async(req,res) => {
     }
 })
 
-
+// only CREATOR can perform POST,DELETE,UPDATE
 bootRouter.post("/create",auth, restrict("CREATOR"),async(req,res) => {
     try {
         const book = new BookModel(req.body)
